@@ -7,44 +7,68 @@ namespace Graphs
 {
     public class Graph<T>
     {
-        public List<Node<T>> nodes { get; private set; }
-        public List<Edge<T>> edges { get; private set; }
+        public List<Node<T>> Nodes { get; private set; }
+        public List<Edge<T>> Edges { get; private set; }
         public Graph()
         {
-            nodes = new List<Node<T>>();
-            edges = new List<Edge<T>>();
+            Nodes = new List<Node<T>>();
+            Edges = new List<Edge<T>>();
         }
         public void AddNode(Node<T> node)
         {
-            nodes.Add(node);
+            Nodes.Add(node);
         }
         public void RemoveNode(Node<T> node)
         {
-            nodes.Remove(node);
+            Nodes.Remove(node);
             if (node != null)
             {
-                foreach (Edge<T> edge in node.connectedEdges)
+                foreach (Edge<T> edge in node.ConnectedEdges)
                 {
                     edge.Unlink();
-                    edges.Remove(edge);
+                    Edges.Remove(edge);
                 }
             }
+        }
+        public Boolean Contains(Node<T> a)
+        {
+            return Nodes.Contains(a);
         }
         /// <summary>
         /// Returns the first Node with contents equal to val
         /// </summary>
         /// <param name="val">Search term</param>
         /// <returns></returns>
-        public Node<T> getNode(T val)
+        public Node<T> GetNode(T val)
         {
-            foreach (Node<T> node in nodes)
+            foreach (Node<T> node in Nodes)
             {
-                if (node.content.Equals(val))
+                if (node.Content.Equals(val))
                 {
                     return node;
                 }
             }
             return null;
+        }
+        /// <summary>
+        /// Contructs an edge and adds it (and the nodes if necessary) to the Graph
+        /// </summary>
+        /// <param name="a">Node A</param>
+        /// <param name="b">Node B</param>
+        /// <param name="dir">Direction (optional)</param>
+        /// <param name="len">Length (optional)</param>
+        public void AddEdge(Node<T> a, Node<T> b, Edge<T>.Direction dir = Edge<T>.Direction.None, Int32 len = 0)
+        {
+            if (!Nodes.Contains(a))
+            {
+                AddNode(a);
+            }
+            if (!Nodes.Contains(b))
+            {
+                AddNode(b);
+            }
+            Edge<T> edge = new Edge<T>(a, b, dir, len);
+            Edges.Add(edge);
         }
     }
 }

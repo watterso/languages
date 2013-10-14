@@ -7,22 +7,22 @@ namespace Graphs
 {
     public class Node<T>
     {
-        public List<Edge<T>> connectedEdges { get; private set; }
-        public T content { get; set; }
+        public List<Edge<T>> ConnectedEdges { get; private set; }
+        public T Content { get; set; }
 
         public Node (T data)
         {
-            content = data;
-            connectedEdges = new List<Edge<T>>();
+            Content = data;
+            ConnectedEdges = new List<Edge<T>>();
         }
 
         public void RemoveEdge(Edge<T> edge)
         {
-            connectedEdges.Remove(edge);
+            ConnectedEdges.Remove(edge);
         }
         public void AddEdge(Edge<T> edge)
         {
-            connectedEdges.Add(edge);
+            ConnectedEdges.Add(edge);
         }
     }
 }

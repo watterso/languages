@@ -8,57 +8,57 @@ namespace Graphs
     public class Edge<T>
     {
         public enum Direction { AtoB = 1, BtoA = -1, None = 0 }
-        public Node<T> nodeA
+        public Node<T> NodeA
         {
             get
             {
-                return nodeA;
+                return NodeA;
             }
             set
             {
-                if (nodeA != null)
+                if (NodeA != null)
                 {
-                    nodeA.RemoveEdge(this);
+                    NodeA.RemoveEdge(this);
                 }
-                nodeA = value;
-                if (nodeA != null)
+                NodeA = value;
+                if (NodeA != null)
                 {
-                    nodeA.AddEdge(this);
+                    NodeA.AddEdge(this);
                 }
 
             }
         }
-        public Node<T> nodeB
+        public Node<T> NodeB
         {
             get
             {
-                return nodeB;
+                return NodeB;
             }
             set
             {
-                if (nodeB != null)
+                if (NodeB != null)
                 {
-                    nodeB.RemoveEdge(this);
+                    NodeB.RemoveEdge(this);
                 }
-                nodeB = value;
-                if (nodeB != null)
+                NodeB = value;
+                if (NodeB != null)
                 {
-                    nodeB.AddEdge(this);
+                    NodeB.AddEdge(this);
                 }
 
             }
         }
-        public Direction direction { get; set; }
-        public Int32 length { get; set; }
-        public Boolean visited { get; set; }
+        public Direction EdgeDirection { get; set; }
+        public Int32 Length { get; set; }
+        public Boolean Visited { get; set; }
 
         public Edge(Node<T> a, Node<T> b, Direction dir = Direction.None, Int32 len = 0)
         {
-            nodeA = a;
-            nodeB = b;
-            direction = dir;
-            length = len;
-            visited = false;
+            NodeA = a;
+            NodeB = b;
+            EdgeDirection = dir;
+            Length = len;
+            Visited = false;
         }
         /// <summary>
         /// Returns whether it is possible to cross edge starting from startNode
@@ -68,16 +68,16 @@ namespace Graphs
         public Boolean CanCross(Node<T> startNode)
         {
             return startNode == null ? false :
-                (startNode == nodeA && direction == Direction.AtoB || direction == Direction.None) ||
-                (startNode == nodeB && direction == Direction.BtoA || direction == Direction.None);
+                (startNode == NodeA && EdgeDirection == Direction.AtoB || EdgeDirection == Direction.None) ||
+                (startNode == NodeB && EdgeDirection == Direction.BtoA || EdgeDirection == Direction.None);
         }
         /// <summary>
         /// Removes Edge from edge list of both nodes
         /// </summary>
         public void Unlink()
         {
-            nodeA = null;
-            nodeB = null;
+            NodeA = null;
+            NodeB = null;
         }
     }
 }
