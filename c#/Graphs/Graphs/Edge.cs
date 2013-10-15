@@ -8,42 +8,44 @@ namespace Graphs
     public class Edge<T>
     {
         public enum Direction { AtoB = 1, BtoA = -1, None = 0 }
+        private Node<T> _NodeA;
         public Node<T> NodeA
         {
             get
             {
-                return NodeA;
+                return _NodeA;
             }
             set
             {
-                if (NodeA != null)
+                if (_NodeA != null)
                 {
-                    NodeA.RemoveEdge(this);
+                    _NodeA.RemoveEdge(this);
                 }
-                NodeA = value;
-                if (NodeA != null)
+                _NodeA = value;
+                if (_NodeA != null)
                 {
-                    NodeA.AddEdge(this);
+                    _NodeA.AddEdge(this);
                 }
 
             }
         }
+        private Node<T> _NodeB;
         public Node<T> NodeB
         {
             get
             {
-                return NodeB;
+                return _NodeB;
             }
             set
             {
-                if (NodeB != null)
+                if (_NodeB != null)
                 {
-                    NodeB.RemoveEdge(this);
+                    _NodeB.RemoveEdge(this);
                 }
-                NodeB = value;
-                if (NodeB != null)
+                _NodeB = value;
+                if (_NodeB != null)
                 {
-                    NodeB.AddEdge(this);
+                    _NodeB.AddEdge(this);
                 }
 
             }

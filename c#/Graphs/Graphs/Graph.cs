@@ -34,6 +34,10 @@ namespace Graphs
         {
             return Nodes.Contains(a);
         }
+        public Boolean Contains(T d)
+        {
+            return GetNode(d) != null;
+        }
         /// <summary>
         /// Returns the first Node with contents equal to val
         /// </summary>
@@ -69,6 +73,19 @@ namespace Graphs
             }
             Edge<T> edge = new Edge<T>(a, b, dir, len);
             Edges.Add(edge);
+        }
+        public void AddEdge(Edge<T> e)
+        {
+            Edges.Add(e);
+        }
+        public string PrintNodes()
+        {
+            string ret = "";
+            foreach (Node<T> n in Nodes)
+            {
+                ret += n.Content.ToString() + ",";
+            }
+            return ret;
         }
     }
 }

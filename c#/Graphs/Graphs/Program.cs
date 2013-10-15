@@ -11,14 +11,31 @@ namespace Graphs
         {
             //TODO: Adapt this to load graph
             string[] lines = System.IO.File.ReadAllLines(@"StateAdjacency.txt");
-
-            // Display the file contents by using a foreach loop.
-            System.Console.WriteLine("Contents of WriteLines2.txt = ");
+            Graph<string> graph = new Graph<string>();
+            Console.WriteLine("HERE 0.");
             foreach (string line in lines)
             {
-                // Use a tab to indent each line of the file.
-                Console.WriteLine("\t" + line);
+                string[] nodes = line.Split(' ');
+                //Console.WriteLine(nodes[0]+" "+nodes[1]);
+                Node<string> a = graph.GetNode(nodes[0]);
+                Node<string> b = graph.GetNode(nodes[1]);
+                if (a==null)
+                {
+                    a = new Node<string>(nodes[0]);
+                    graph.AddNode(a);
+                }
+                if (b == null)
+                {
+                    b = new Node<string>(nodes[1]);
+                    graph.AddNode(b);
+                }
+                if (!a.Connected(b))
+                {
+                    Edge<string> e = new Edge<string>(a,b);
+                    graph.AddEdge(e);
+                }
             }
+            Console.WriteLine(graph.PrintNodes());
             // Keep the console window open in debug mode.
             Console.WriteLine("Press any key to exit.");
             System.Console.ReadKey();

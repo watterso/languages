@@ -24,5 +24,26 @@ namespace Graphs
         {
             ConnectedEdges.Add(edge);
         }
+        public Boolean Connected(Node<T> n)
+        {
+            foreach (Edge<T> e in ConnectedEdges)
+            {
+                if (e.NodeA.Equals(this))
+                {
+                    if (e.NodeB.Equals(n) && e.CanCross(n))
+                    {
+                        return true;
+                    }
+                }
+                else if (e.NodeB.Equals(this))
+                {
+                    if (e.NodeA.Equals(n) && e.CanCross(n))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
