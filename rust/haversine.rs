@@ -1,3 +1,5 @@
+extern crate geolocation;
+
 use std::env;
 
 //a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
@@ -12,19 +14,8 @@ fn haversine_f64(delta_lat: f64, lat1: f64, lat2: f64, delta_long:f64) -> f64 {
     radius_earth_meters * c
 }
 
-#[derive(Debug)]
-struct GeoLocation {
-    latitude: f64,
-    longitude: f64
-}
 
-#[derive(Debug)]
-struct GeoLocationInRadians {
-    latitude: f64,
-    longitude: f64
-}
-
-fn haversine(point1: GeoLocationInRadians, point2: GeoLocationInRadians) -> f64 {
+fn haversine(point1: geolocation::GeoLocationInRadians, point2: geolocation::GeoLocationInRadians) -> f64 {
     haversine_f64(
         point1.latitude - point2.latitude,
         point1.latitude,
@@ -33,65 +24,24 @@ fn haversine(point1: GeoLocationInRadians, point2: GeoLocationInRadians) -> f64 
     )
 }
 
-impl GeoLocation {
-    fn to_radians(&self) -> GeoLocationInRadians {
-        GeoLocationInRadians{
-            latitude: self.latitude.to_radians(),
-            longitude: self.longitude.to_radians()
-        }
-    }
+trait Haversine<T> {
+    fn haversine(&self, other: &T) -> f64;
+}
 
-    fn haversine(&self, other: &GeoLocation) -> f64 {
+impl Haversine<geolocation::GeoLocation> for geolocation::GeoLocation {
+    fn haversine(&self, other: &geolocation::GeoLocation) -> f64 {
         haversine(self.to_radians(), other.to_radians())
     }
 }
 
-struct GeoLocationBuilder{
-    lat: f64,
-    long: f64
-}
-
-trait ValidCoordinate {
-    fn valid_latitude(&self) -> bool;
-    fn valid_longitude(&self) -> bool;
-}
-
-impl ValidCoordinate for f64{
-    fn valid_latitude(&self) -> bool { *self >= -90.0f64 && *self <= 90.0f64 }
-    fn valid_longitude(&self) -> bool { *self >= -180.0f64 && *self <= 180.0f64 }
-}
-
-impl GeoLocationBuilder {
-    fn new() -> GeoLocationBuilder {
-        GeoLocationBuilder { lat: 0.0, long: 0.0 }
-    }
-
-    fn lat(&mut self, new_lat: f64) -> &mut GeoLocationBuilder {
-        self.lat = new_lat;
-        self
-    }
-
-    fn long(&mut self, new_long: f64) -> &mut GeoLocationBuilder {
-        self.long = new_long;
-        self
-    }
-
-    fn finalize(&self) -> GeoLocation {
-        if self.lat.valid_latitude() && self.long.valid_longitude(){
-            GeoLocation{ latitude: self.lat, longitude: self.long }
-        } else{
-            panic!("invalid lat-long: {}, {}", self.lat, self.long);
-        }
-    }
-}
 
 fn main() {
     let args: Vec<_> = env::args().collect();
     let coords: Vec<f64> = args.into_iter()
                                 .filter_map(|arg| arg.parse::<f64>().ok())
                                 .collect();
-    let start = GeoLocationBuilder::new().lat(coords[0]).long(coords[1]).finalize();
-    let end = GeoLocationBuilder::new().lat(coords[2]).long(coords[3]).finalize();
+    let start = geolocation::GeoLocationBuilder::new().lat(coords[0]).long(coords[1]).finalize();
+    let end = geolocation::GeoLocationBuilder::new().lat(coords[2]).long(coords[3]).finalize();
     println!("start: {:?}\nend: {:?}", start, end);
     println!("distance: {} meters", start.haversine(&end));
 
