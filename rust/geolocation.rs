@@ -1,3 +1,5 @@
+pub type Course = f64;
+
 #[derive(Debug)]
 pub struct GeoLocation {
     latitude: f64,
