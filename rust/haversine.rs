@@ -1,7 +1,5 @@
 extern crate geolocation;
 
-use std::env;
-
 //a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
 //c = 2 ⋅ atan2( √a, √(1−a) )
 //d = R ⋅ c
@@ -24,7 +22,7 @@ fn haversine(point1: geolocation::GeoLocationInRadians, point2: geolocation::Geo
     )
 }
 
-trait Haversine<T> {
+pub trait Haversine<T> {
     fn haversine(&self, other: &T) -> f64;
 }
 
@@ -32,17 +30,4 @@ impl Haversine<geolocation::GeoLocation> for geolocation::GeoLocation {
     fn haversine(&self, other: &geolocation::GeoLocation) -> f64 {
         haversine(self.to_radians(), other.to_radians())
     }
-}
-
-
-fn main() {
-    let args: Vec<_> = env::args().collect();
-    let coords: Vec<f64> = args.into_iter()
-                                .filter_map(|arg| arg.parse::<f64>().ok())
-                                .collect();
-    let start = geolocation::GeoLocationBuilder::new().lat(coords[0]).long(coords[1]).finalize();
-    let end = geolocation::GeoLocationBuilder::new().lat(coords[2]).long(coords[3]).finalize();
-    println!("start: {:?}\nend: {:?}", start, end);
-    println!("distance: {} meters", start.haversine(&end));
-
 }
