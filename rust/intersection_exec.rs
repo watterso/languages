@@ -10,7 +10,7 @@ fn course12(
 ) -> f64 {
     let numerator = point2.latitude.sin()-point1.latitude.sin()*dst12.cos(); 
     let denominator = dst12.sin()*point1.latitude.cos();
-    println!("crs12 {} / {} = {}", numerator, denominator,  (numerator / denominator).acos());
+    //println!("crs12 {} / {} = {}", numerator, denominator,  (numerator / denominator).acos());
     (numerator / denominator).acos()
 }
 
@@ -21,7 +21,7 @@ fn course21(
 ) -> f64 {
     let numerator = point1.latitude.sin()-point2.latitude.sin()*dst12.cos(); 
     let denominator = dst12.sin()*point2.latitude.cos();
-    println!("crs21 {} / {} = {}", numerator, denominator,  (numerator / denominator).acos());
+    //println!("crs21 {} / {} = {}", numerator, denominator,  (numerator / denominator).acos());
     (numerator / denominator).acos()
 }
 
@@ -42,10 +42,10 @@ fn intersection(
             point1_rad.latitude.cos()*point2_rad.latitude.cos()*(((lon1-lon2)/2f64).sin()).powi(2)
         ).sqrt()
     ).asin();
-    println!("point1_rad: {:?}\npoint2_rad: {:?}", point1_rad, point2_rad);
-    println!("dst12: {}", dst12);
+    //println!("point1_rad: {:?}\npoint2_rad: {:?}", point1_rad, point2_rad);
+    //println!("dst12: {}", dst12);
     //TODO find out what this condition actually means
-    println!("cond: {}", (point2_rad.longitude - point1_rad.longitude).sin());
+    //println!("cond: {}", (point2_rad.longitude - point1_rad.longitude).sin());
     let (crs12, crs21) =
         if (point2_rad.longitude - point1_rad.longitude).sin() < 0f64 {
             (course12(&point1_rad, &point2_rad, dst12), 2f64 * f64::consts::PI - course21(&point1_rad, &point2_rad, dst12))
@@ -54,7 +54,7 @@ fn intersection(
         };
     let crs12 = course12(&point1_rad, &point2_rad, dst12);
     let crs21 = course21(&point1_rad, &point2_rad, dst12);
-    println!("crs12: {:?}\ncrs21: {:?}", crs12, crs21);
+    //println!("crs12: {:?}\ncrs21: {:?}", crs12, crs21);
     //TODO modulo vs remainder sign stuff
     let ang1 = crs13-crs12;
     let ang2 = crs21-crs23;
@@ -82,9 +82,8 @@ fn intersection(
     //atan2(sin(crs13)*sin(dst13)*cos(lat1),cos(dst13)-sin(lat1)*sin(lat3))
     let dlon =
         (crs13.sin()*dst13.sin()*point1_rad.latitude.cos()).atan2(dst13.cos()-point1_rad.latitude.sin()*lat3.sin());
-    //TODO modulo vs remainder sign stuff
     let lon3 = point1_rad.longitude+dlon;
-    println!("ang1: {:?}\nang2: {:?}\nang3: {:?}\ndst13: {:?}\nlat3,lon3: {},{}\n", ang1, ang2, ang3, dst13, lat3,lon3);
+    //println!("ang1: {:?}\nang2: {:?}\nang3: {:?}\ndst13: {:?}\nlat3,lon3: {},{}\n", ang1, ang2, ang3, dst13, lat3,lon3);
     result_builder.long(lon3.to_degrees());
     result_builder.finalize()
 }
